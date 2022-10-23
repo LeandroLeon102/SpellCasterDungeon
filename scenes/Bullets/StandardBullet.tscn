@@ -1,0 +1,71 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://scenes/Bullets/Bullet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://bullet2.png" type="Texture" id=3]
+
+[sub_resource type="Gradient" id=8]
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=9]
+gradient = SubResource( 8 )
+
+[sub_resource type="Curve" id=5]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.788571, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=10]
+curve = SubResource( 5 )
+
+[sub_resource type="ParticlesMaterial" id=7]
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale_curve = SubResource( 10 )
+color_ramp = SubResource( 9 )
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0.384146, 1 )
+colors = PoolColorArray( 0, 0.929412, 1, 1, 1, 0, 0.266667, 0 )
+
+[sub_resource type="GradientTexture" id=11]
+gradient = SubResource( 2 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+lifetime_randomness = 0.5
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+color_ramp = SubResource( 11 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 2.5, 2.5 )
+
+[node name="StardardBullet" instance=ExtResource( 2 )]
+damage = 20
+vel = 300.0
+
+[node name="spriteTrail" parent="." index="0"]
+visible = true
+process_material = SubResource( 7 )
+texture = ExtResource( 3 )
+
+[node name="Particles2D" parent="." index="1"]
+visible = true
+process_material = SubResource( 4 )
+
+[node name="Area2D" parent="." index="2"]
+collision_mask = 33
+
+[node name="CollisionShape2D" parent="Area2D" index="0"]
+shape = SubResource( 1 )
+
+[node name="Sprite" parent="." index="3"]
+modulate = Color( 2, 2, 2, 1 )
+position = Vector2( 0.5, 0.5 )
+texture = ExtResource( 3 )
+
+[node name="VisibilityNotifier2D" parent="." index="6"]
+rect = Rect2( -2.5, -2.5, 5, 5 )

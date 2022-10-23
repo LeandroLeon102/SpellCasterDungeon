@@ -1,0 +1,120 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://torch.png" type="Texture" id=1]
+[ext_resource path="res://src/images/Lights/Untitled.png" type="Texture" id=2]
+[ext_resource path="res://src/images/Lights/Untitled2.png" type="Texture" id=3]
+[ext_resource path="res://src/sounds/ES_Fireplace Constant Burning Flame - SFX Producer.mp3" type="AudioStream" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 1.5, 5.5 )
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0, 0.176471, 0.362745, 0.588235, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 0.927734, 1, 0, 1, 1, 0.486328, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0.596078 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -9.15521, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+spread = 20.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 10.0
+initial_velocity_random = 0.5
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = 10.0
+radial_accel_random = 1.0
+angle = 180.0
+angle_random = 1.0
+scale = 0.01
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 3 )
+
+[sub_resource type="Gradient" id=7]
+offsets = PoolRealArray( 0, 0.127451, 0.441176, 0.647059, 0.779412, 0.965686 )
+colors = PoolColorArray( 0, 0, 0, 0, 1, 1, 1, 1, 1, 0.960938, 0, 1, 1, 0.515625, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=8]
+gradient = SubResource( 7 )
+
+[sub_resource type="Curve" id=9]
+_data = [ Vector2( 0.209302, 0.987245 ), 0.0, -0.292517, 0, 0, Vector2( 1, 0 ), -4.89052, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=10]
+curve = SubResource( 9 )
+
+[sub_resource type="ParticlesMaterial" id=11]
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+spread = 20.0
+gravity = Vector3( 0, 98, 0 )
+initial_velocity = 40.65
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 1.5
+scale_random = 1.0
+scale_curve = SubResource( 10 )
+color_ramp = SubResource( 8 )
+
+[node name="Area2D" type="Area2D"]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -0.5, 1.5 )
+shape = SubResource( 1 )
+disabled = true
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Particles2D" type="Particles2D" parent="."]
+position = Vector2( 0, -10 )
+amount = 16
+draw_order = 1
+process_material = SubResource( 6 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Particles2D2" type="Particles2D" parent="."]
+position = Vector2( 0, -6 )
+amount = 4
+lifetime = 1.1
+explosiveness = 0.5
+randomness = 0.5
+process_material = SubResource( 11 )
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( 0, -10 )
+texture = ExtResource( 3 )
+texture_scale = 0.2
+mode = 2
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
+pitch_scale = 0.6
+autoplay = true
+max_distance = 320.0
+attenuation = 2.54912
+bus = "SFX"

@@ -1,0 +1,83 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://bullet.gd" type="Script" id=1]
+[ext_resource path="res://scenes/Bullets/explodeParticles.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/images/Lights/Untitled2.png" type="Texture" id=3]
+
+[sub_resource type="Gradient" id=10]
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=9]
+gradient = SubResource( 10 )
+
+[sub_resource type="Curve" id=11]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.788571, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=6]
+curve = SubResource( 11 )
+
+[sub_resource type="ParticlesMaterial" id=12]
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale_curve = SubResource( 6 )
+color_ramp = SubResource( 9 )
+
+[sub_resource type="Gradient" id=13]
+offsets = PoolRealArray( 0.384146, 1 )
+colors = PoolColorArray( 1, 0, 0.266667, 1, 1, 0, 0.266667, 0 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 13 )
+
+[sub_resource type="ParticlesMaterial" id=14]
+lifetime_randomness = 0.5
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+color_ramp = SubResource( 3 )
+
+[node name="Bullet" type="Node2D"]
+script = ExtResource( 1 )
+vel = 100.0
+
+[node name="spriteTrail" type="Particles2D" parent="."]
+visible = false
+lifetime = 0.1
+local_coords = false
+process_material = SubResource( 12 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+visible = false
+amount = 32
+explosiveness = 0.12
+randomness = 1.0
+local_coords = false
+process_material = SubResource( 14 )
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 0, 2.38419e-07 )
+
+[node name="Sprite" type="Sprite" parent="."]
+
+[node name="explodeParticles" parent="." instance=ExtResource( 2 )]
+
+[node name="Light2D" type="Light2D" parent="."]
+texture = ExtResource( 3 )
+texture_scale = 0.1
+color = Color( 0.529412, 1, 0.945098, 1 )
+mode = 2
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+rect = Rect2( 0, 0, 0, 0 )
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

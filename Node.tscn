@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://src/tileset/tileset1.tres" type="TileSet" id=1]
+[ext_resource path="res://CaveGenerator.gd" type="Script" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+var bat = load(\"res://scenes/Enemies/Bat.tscn\")
+
+
+
+	
+func spawn_bat(pos):
+
+	var b = bat.instance()
+	b.position = pos
+	$Node2D.add_child(b)
+
+
+func clear_bats():
+	var bats = $Node2D.get_children()
+	for bat in bats:
+		bat.queue_free()
+	
+"
+
+[node name="Node" type="Node"]
+script = SubResource( 1 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+cell_custom_transform = Transform2D( 16, 0, 0, 16, 0, 0 )
+collision_layer = 0
+collision_mask = 0
+format = 1
+
+[node name="CaveGenerator" type="Node" parent="TileMap"]
+script = ExtResource( 2 )
+random_seed_generation = true
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="TileMap2" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+cell_custom_transform = Transform2D( 16, 0, 0, 16, 0, 0 )
+format = 1

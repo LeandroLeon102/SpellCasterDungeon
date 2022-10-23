@@ -1,0 +1,70 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://src/sounds/hit/hit1.wav" type="AudioStream" id=1]
+
+[sub_resource type="Gradient" id=9]
+offsets = PoolRealArray( 0, 0.691176 )
+colors = PoolColorArray( 0, 0.929412, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=10]
+gradient = SubResource( 9 )
+
+[sub_resource type="Curve" id=8]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.11292, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=3]
+curve = SubResource( 8 )
+
+[sub_resource type="ParticlesMaterial" id=1]
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+direction = Vector3( 0, 0, 0 )
+spread = 180.0
+gravity = Vector3( 0, 900, 0 )
+initial_velocity = 200.0
+initial_velocity_random = 0.63
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel_random = 1.0
+scale_curve = SubResource( 3 )
+color = Color( 0, 0.929412, 1, 1 )
+color_ramp = SubResource( 10 )
+
+[sub_resource type="GDScript" id=4]
+script/source = "extends Particles2D
+
+
+func _ready():
+	pass
+	
+func _physics_process(_delta):
+	if emitting and not $AudioStreamPlayer.playing:
+		$AudioStreamPlayer.play()
+	if emitting == false:
+		queue_free()
+
+
+func _on_AudioStreamPlayer_finished():
+	queue_free()
+"
+
+[node name="explodeParticles" type="Particles2D"]
+modulate = Color( 5, 5, 5, 1 )
+z_index = 4
+z_as_relative = false
+emitting = false
+amount = 32
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource( 1 )
+script = SubResource( 4 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+volume_db = -10.0
+pitch_scale = 0.6
+bus = "SFX"
+
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
